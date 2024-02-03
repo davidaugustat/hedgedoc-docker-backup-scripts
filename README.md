@@ -8,15 +8,18 @@ It is important to backup the Docker volumes of the installation regularly. The 
 
 ## How to use
 ### Setup
-In the `config.sh` file adjust the names of the Docker volumes to match your installation. The default names are:
+In the `config.sh` file adjust the following parameters to match your installation. The default names are:
 
 ```bash
-uploads_docker_volume_name=hedgedoc1_uploads
-database_docker_volume_name=hedgedoc1_database
+uploads_docker_volume_name=hedgedoc_uploads
+
+database_docker_container_name=hedgedoc-database-1
+hedgedoc_database_name="hedgedoc"
+hedgedoc_postgres_user="hedgedoc"
 ```
 
 ### Backup
-1. Stop the Hedgedoc containers (app and database).
+1. Make sure that the Hedgedoc instance is running (at least the PostgreSQL container). This is required, because the PostgreSQL server is used to create a database dump.
 2. Run
     ```bash
     bash backup-hedgedoc.sh
@@ -26,19 +29,18 @@ database_docker_volume_name=hedgedoc1_database
     ```
     hedgedoc_backup_YYYY-mm-dd_HH-MM-SS.tgz
     ├── hedgedoc_uploads_backup.tgz
-    └── hedgedoc_database_backup.tgz
+    └── hedgedoc_database_backup.sql
     ```
 3. Save this file to a secure location.
-4. Start the Hedgedoc containers again.
 
 
 ### Restore
 The restore script assumes that you already have a Hedgedoc installation running in Docker containers. If you want to restore the data to a new installation, you have to create the Docker volumes first, e.g., with the `docker-compose.yml` file from the [Hedgedoc docs](https://docs.hedgedoc.org/setup/docker/).
 
-1. Stop the Hedgedoc containers (app and database).
+1. Make sure that the Hedgedoc instance is running (at least the PostgreSQL container).
 2. Run
     ```
     bash hedgedoc-restore.sh hedgedoc_backup_YYYY-mm-dd_HH-MM-SS.tgz
     ```
     This script restores the two Docker volumes of the installation from the `hedgedoc_backup_YYYY-mm-dd_HH-MM-SS.tgz` file.
-4. Start the Hedgedoc containers again. The restored data should be available now.
+4. The restored data should be available now.

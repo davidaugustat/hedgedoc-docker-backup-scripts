@@ -7,6 +7,7 @@
 # https://github.com/BretFisher/docker-vackup/blob/main/vackup
 #
 # Usage: Run this script in the terminal with the command './restore-hedgedoc.sh <backup_file.tgz>'.
+
 source config.sh
 
 # Check if an argument is provided
@@ -22,11 +23,23 @@ if [ ! -f "$backup_file" ]; then
     exit 1
 fi
 
+# Check if the container $database_docker_container_name exists:
+if ! docker ps -a --format '{{.Names}}' | grep -Eq "^${database_docker_container_name}$"; then
+    echo "Error: Docker container '$database_docker_container_name' does not exist."
+    exit 1
+fi
+
+# Check if the volume $uploads_docker_volume_name exists:
+if ! docker volume ls --format '{{.Name}}' | grep -Eq "^${uploads_docker_volume_name}$"; then
+    echo "Error: Docker volume '$uploads_docker_volume_name' does not exist."
+    exit 1
+fi
+
 # Extract the backup
 tar -xzf "$backup_file"
 
 # Import the database backup
-bash vackup.sh import "$database_archive_file" "$database_docker_volume_name"
+cat "$database_archive_file" | docker exec -i "$database_docker_container_name" psql -U "$hedgedoc_postgres_user"
 
 # Import the uploads backup
 bash vackup.sh import "$uploads_archive_file" "$uploads_docker_volume_name"
