@@ -35,7 +35,7 @@ hedgedoc_postgres_user="hedgedoc"
 
 
 ### Restore
-The restore script assumes that you already have a Hedgedoc installation running in Docker containers. If you want to restore the data to a new installation, you have to create the Docker volumes first, e.g., with the `docker-compose.yml` file from the [Hedgedoc docs](https://docs.hedgedoc.org/setup/docker/).
+The restore script assumes that you already have a Hedgedoc installation running in Docker containers. If you want to restore the data to a new installation, you have to create a blank HedgeDoc instance first, e.g., with the `docker-compose.yml` file from the [Hedgedoc docs](https://docs.hedgedoc.org/setup/docker/).
 
 1. Make sure that the Hedgedoc instance is running (at least the PostgreSQL container).
 2. Run
