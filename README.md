@@ -40,7 +40,7 @@ The restore script assumes that you already have a Hedgedoc installation running
 1. Make sure that the Hedgedoc instance is running (at least the PostgreSQL container).
 2. Run
     ```
-    bash hedgedoc-restore.sh hedgedoc_backup_YYYY-mm-dd_HH-MM-SS.tgz
+    bash restore-hedgedoc.sh hedgedoc_backup_YYYY-mm-dd_HH-MM-SS.tgz
     ```
     This script restores the two Docker volumes of the installation from the `hedgedoc_backup_YYYY-mm-dd_HH-MM-SS.tgz` file.
 4. The restored data should be available now.
